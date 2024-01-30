@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import SearchBar from './components/SearchBar';
+import RepoInfo from './components/RepoInfo';
+import Board from './components/Board';
+import githubReducer from './features/github/githubSlice';
 
-function App() {
+const store = configureStore({
+  reducer: {
+    github: githubReducer,
+  },
+});
+
+const App: React.FC = () => {
+  const [owner, setOwner] = useState('');
+  const [repo, setRepo] = useState('');
+
+  function getOwnerAndRepoFromUrl(url: string): { owner: string; repo: string } | null {
+    const match = url.match(/github\.com\/([^/]+)\/([^/]+)$/);
+    if (match) {
+      const [, owner, repo] = match;
+      setOwner(owner);
+      setRepo(repo);
+      return { owner, repo };
+    } else {
+      return null;
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <div>
+        <SearchBar onSearch={getOwnerAndRepoFromUrl} />
+        <RepoInfo owner={owner} repo={repo} />
+        <Board issues={[]} />
+      </div>
+    </Provider>
   );
-}
+};
 
 export default App;
