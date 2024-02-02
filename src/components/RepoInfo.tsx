@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Flex } from 'antd';
+import "./index.css"
 
 interface RepoInfoProps {
   owner: string;
@@ -7,6 +9,14 @@ interface RepoInfoProps {
 
 const RepoInfo: React.FC<RepoInfoProps> = ({ owner, repo }) => {
   const [stars, setStars] = useState<number | null>(null);
+
+  function ucFirst(str: string | any[]) {
+    if (!str) return str;
+  
+    return str[0].toUpperCase() + str.slice(1);
+  }
+  let ownertxt = ucFirst(owner);
+  let repotxt = ucFirst(repo);
 
   useEffect(() => {
     const fetchRepoInfo = async () => {
@@ -23,14 +33,18 @@ const RepoInfo: React.FC<RepoInfoProps> = ({ owner, repo }) => {
   }, [owner, repo]);
 
   return (
-    <div>
-    <div>
-      <a href={`https://github.com/${owner}`}>{owner}</a>  {' > '}  <a href={`https://github.com/${owner}/${repo}`}>{repo}</a>
-    </div>
-    <div>
-      {stars !== null && <p>⭐{stars} star</p>}
-    </div>
-  </div>
+  <Flex gap='small' align="center" className='font'>
+    <span>
+      <a href={`https://github.com/${owner}`}>{ownertxt}</a>
+    </span>
+    <p className='blue'>{'>'}</p>
+    <span>
+      <a href={`https://github.com/${owner}/${repo}`}>{repotxt}</a>
+    </span>
+    <span>
+      {stars !== null && <p>⭐{stars} stars</p>}
+    </span>
+  </Flex>
   );
 };
 

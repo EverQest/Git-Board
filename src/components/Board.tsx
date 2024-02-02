@@ -2,6 +2,8 @@ import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import githubReducer, { moveIssue } from '../features/github/githubSlice';
+import { Flex } from 'antd';
+import "./index.css"
 
 interface BoardProps {
   issues: Issue[];
@@ -30,6 +32,7 @@ const Board: React.FC<BoardProps> = ({ issues }) => {
   };
 
   return (
+  <Flex className='font' gap="large" align="center" justify='space-around'>
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="todo">
         {(provided) => (
@@ -101,6 +104,7 @@ const Board: React.FC<BoardProps> = ({ issues }) => {
         )}
       </Droppable>
     </DragDropContext>
+  </Flex>
   );
 };
 
