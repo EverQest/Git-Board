@@ -13,8 +13,8 @@ const store = configureStore({
 });
 
 const App: React.FC = () => {
-  const [owner, setOwner] = useState('');
-  const [repo, setRepo] = useState('');
+  const [owner, setOwner] = useState('facebook');
+  const [repo, setRepo] = useState('react');
 
   function getOwnerAndRepoFromUrl(url: string): { owner: string; repo: string } | null {
     const match = url.match(/github\.com\/([^/]+)\/([^/]+)$/);
